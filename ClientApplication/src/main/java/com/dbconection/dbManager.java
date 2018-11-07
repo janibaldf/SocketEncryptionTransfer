@@ -23,8 +23,7 @@ import java.util.logging.Logger;
 public class dbManager {
 
     Connection dbconection = dbConnector.getEstadoBD().getConection();
-    private static final String sqlInsert = "INSERT INTO TB_BITACORA (PAQUETE, TRAMA, TEXTO, INTENTO, ESTADO, FECHA_CARGADO, FECHA_ACTUALIZADO) "
-            + "VALUES( ?, ?, ?, ?, ?, ?, ?)";
+    private static final String sqlInsert = "INSERT INTO TB_BITACORA (PAQUETE, TRAMA, TEXTO, INTENTO, ESTADO, FECHA_CARGADO, FECHA_ACTUALIZADO) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
 private static final String sqlInsertPaquete = "INSERT INTO TB_PAQUETE (FECHA_CARGADO, FECHA_ACTUALIZADO, ESTADO)VALUES(?,? ,0);";
 
     public void insertTrama(Registry r) {
@@ -77,10 +76,13 @@ private static final String sqlSelectTrama= "SELECT * FROM TB_BITACORA WHERE EST
                 while (rset.next()) {
                    Registry r= new Registry();
                    r.setId(rset.getInt("ID"));
-                   r.setEstado(0);
+                   r.setEstado(rset.getInt("ESTADO"));
                    r.setFechaActualizo(rset.getString("FECHA_ACTUALIZADO"));
                     r.setFechaCargado(rset.getString("FECHA_CARGADO"));
                      r.setTexto(rset.getString("TEXTO"));
+                     r.setIdpaquete(rset.getInt("PAQUETE"));
+                      r.setIdtrama(rset.getInt("TRAMA"));
+                      r.setIntento(rset.getInt("INTENTO"));
                      list.add(r);
                 }
                 rset.close();

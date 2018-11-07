@@ -88,5 +88,7 @@ public class Registry {
         return "registry{" + "id=" + id + ", idpaquete=" + idpaquete + ", intento=" + intento + ", idtrama=" + idtrama + ", texto=" + texto + ", estado=" + estado + ", fechaCargado=" + fechaCargado + ", fechaActualizo=" + fechaActualizo + '}';
     }
     
-
+  public String toStringSplit() {
+        return  idpaquete + "$" + intento + "$" + idtrama + "$" + texto + "$" + estado + "$" + fechaCargado + "$" + fechaActualizo;
+    }
 }

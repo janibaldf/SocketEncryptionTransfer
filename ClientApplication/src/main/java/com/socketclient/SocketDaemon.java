@@ -8,7 +8,10 @@ package com.socketclient;
 import com.bean.Registry;
 import com.dbconection.dbManager;
 import com.utility.Encryption;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,17 +30,22 @@ public class SocketDaemon extends Thread {
         String prueba = "prueba";
         while (true) {
             try {
-                sleep(10000); // 1 segundo (se mide en milisegundos)
+                sleep(1000); // 1 segundo (se mide en milisegundos)
 
             } catch (InterruptedException e) {
                 e.getMessage();
             }
-                SocketClient socket = new SocketClient();
+                SocketClient socket=null;
+            try {
+                socket = new SocketClient();
+            } catch (IOException ex) {
+                Logger.getLogger(SocketDaemon.class.getName()).log(Level.SEVERE, null, ex);
+            }
                Encryption encryption= new Encryption();
             List<Registry> listRegistros = dbmanager.getListRegistros();
             for (Registry r : listRegistros) {
                 System.out.println(r.toString());
-                socket.run(encryption.encryptionText(r.toString()));
+                socket.run(r.getId(),encryption.encryptionText(r.toStringSplit()));
                 
             }
 

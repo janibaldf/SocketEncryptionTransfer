@@ -21,17 +21,21 @@ import java.util.logging.Logger;
  * @author janibaldf
  */
 public class SocketClient {
-    
-      public void run(String msg) {
-	
-          try {
-              int serverPort = 6987;
+    Socket socket=null;
+    public SocketClient() throws IOException{
+          int serverPort = 6987;
               //InetAddress host = InetAddress.getByName("172.16.169.16");
               InetAddress host = InetAddress.getByName("localhost");
            
-              Socket socket;
+              
+                 socket = new Socket(host,serverPort);
+    }
+      public void run(int id,String msg) {
+	
+        
+            
               try {
-                  socket = new Socket(host,serverPort);
+               
                    PrintWriter toServer =
                       new PrintWriter(socket.getOutputStream(),true);
                        
@@ -42,15 +46,13 @@ public class SocketClient {
               
               String line = fromServer.readLine();
               System.out.println(line);
+              
                   
               } catch (IOException ex) {
                   Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
               }
              
-          
-          } catch (UnknownHostException ex) {
-              Logger.getLogger(SocketClient.class.getName()).log(Level.SEVERE, null, ex);
-          }
+       
         
 	}
   }
