@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class dbConnector {
 
-    String url = "/home/janibaldf/Desarrollo/ProyectoRede1/DB/EstacionDB";
+    String url = "EstacionDB.db";
     Connection connect;
 
     private static dbConnector instance;

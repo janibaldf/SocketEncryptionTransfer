@@ -9,7 +9,11 @@ import com.socketclient.SocketDaemon;
 import java.io.IOException;
 
 import com.utility.readFile;
-
+import java.io.File;
+import java.io.FileReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -17,10 +21,9 @@ import com.utility.readFile;
  */
 public class Pantalla extends javax.swing.JFrame {
 
- 
     public Pantalla() {
         initComponents();
-         
+
     }
 
     /**
@@ -32,6 +35,7 @@ public class Pantalla extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        fileChooser = new javax.swing.JFileChooser();
         jBCarga = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         Texto = new javax.swing.JTextArea();
@@ -70,49 +74,61 @@ public class Pantalla extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addContainerGap(14, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jBCarga)
-                    .addComponent(jBMostrar)
-                    .addComponent(jBLimpiarP))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 690, Short.MAX_VALUE)
-                .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jBCarga)
+                        .addGap(47, 47, 47)
+                        .addComponent(jBMostrar)
+                        .addGap(50, 50, 50)
+                        .addComponent(jBLimpiarP)
+                        .addGap(175, 175, 175))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jBCarga)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jBMostrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jBLimpiarP)))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBCarga)
+                    .addComponent(jBMostrar)
+                    .addComponent(jBLimpiarP))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 888, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jBCargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCargaActionPerformed
-        
-        String Archivo = "/home/janibaldf/Desarrollo/ArchivoEjemplo.txt";
-        try {
-            readFile.muestraContenido(Archivo);
-            this.Texto.setText("El Archivo fue cargado con Exito!");
-        } catch (IOException ex) {
+//In response to a button click:
 
+    private void jBCargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCargaActionPerformed
+        int returnVal = fileChooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            try {
+                File file = fileChooser.getSelectedFile();
+                // What to do with the file, e.g. display it in a TextArea
+                String archivo = file.getAbsolutePath();
+                readFile.muestraContenido(archivo);
+                //textarea.read( new FileReader( file.getAbsolutePath() ), null );
+
+            } catch (IOException ex) {
+                Logger.getLogger(Pantalla.class.getName()).log(Level.SEVERE, null, ex);
+                this.Texto.setText("Problemas al cargar el Archivo");
+            }
+        } else {
             this.Texto.setText("Problemas al cargar el Archivo");
         }
-        
+
+
     }//GEN-LAST:event_jBCargaActionPerformed
 
     private void jBMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBMostrarActionPerformed
         String Dato;
-        Dato = readFile.getCadena() ;
+        Dato = readFile.getCadena();
         this.Texto.setText(Dato);
     }//GEN-LAST:event_jBMostrarActionPerformed
 
@@ -151,16 +167,17 @@ public class Pantalla extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Pantalla().setVisible(true);
-                
+
             }
         });
-        
-          SocketDaemon socketDaemon  = new SocketDaemon();
+
+        SocketDaemon socketDaemon = new SocketDaemon(args[0],args[1],args[2]);
         socketDaemon.run();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea Texto;
+    private javax.swing.JFileChooser fileChooser;
     private javax.swing.JButton jBCarga;
     private javax.swing.JButton jBLimpiarP;
     private javax.swing.JButton jBMostrar;

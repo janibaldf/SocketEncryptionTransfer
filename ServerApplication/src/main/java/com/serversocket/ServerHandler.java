@@ -76,7 +76,7 @@ class ServerHandler extends SimpleChannelInboundHandler<String> {
         reg.setFechaActualizado(s[6]);
         reg.setFechaCreado(date.toString());
         reg.setIpOrigen(clientIP);
-        reg.setEstacion(clientHost);
+        reg.setEstacion(s[7]);
         long idRegistro= dbmanager.insertTrama(reg);
 
         ctx.writeAndFlush(idRegistro+"\n");

@@ -18,8 +18,13 @@ import java.util.logging.Logger;
  * @author janibaldf
  */
 public class SocketDaemon extends Thread {
-
-    public SocketDaemon() {
+String ip;
+String port;
+String estacion;
+    public SocketDaemon(String ip , String port, String estacion) {
+        this.estacion=estacion;
+        this.ip=ip;
+        this.port=port;
         setDaemon(true);
         start();
     }
@@ -27,26 +32,36 @@ public class SocketDaemon extends Thread {
 
     @Override
     public void run() {
-        String prueba = "prueba";
+    
         while (true) {
             try {
-                sleep(1000); // 1 segundo (se mide en milisegundos)
+                sleep(100000); // 1 segundo (se mide en milisegundos)
 
             } catch (InterruptedException e) {
                 e.getMessage();
             }
                 SocketClient socket=null;
             try {
-                socket = new SocketClient();
+                socket = new SocketClient(ip, port);
             } catch (IOException ex) {
                 Logger.getLogger(SocketDaemon.class.getName()).log(Level.SEVERE, null, ex);
             }
                Encryption encryption= new Encryption();
             List<Registry> listRegistros = dbmanager.getListRegistros();
             for (Registry r : listRegistros) {
-                System.out.println(r.toString());
-                socket.run(r.getId(),encryption.encryptionText(r.toStringSplit()));
-                
+                if (socket !=null){
+                    r.setEstacion(estacion);
+                    try {
+                        Thread.sleep(500);
+                        socket.run(r.getId(),encryption.encryptionText(r.toStringSplit()));
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(SocketDaemon.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                else{
+                    dbmanager.updateIntento(r.getId());
+                    dbmanager.updateEstado(r.getId(), -1);
+                }
             }
 
         }

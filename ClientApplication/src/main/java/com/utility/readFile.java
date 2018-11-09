@@ -42,17 +42,13 @@ public class readFile {
            while((cadena = b.readLine())!=null) {
                
                Valor = Valor + cadena + "\n";
-               System.out.print("lInea lieda"+i++);
                registry.setIdpaquete(paquete);
-               registry.setIdtrama(i);
+               registry.setIdtrama(i++);
                registry.setTexto(cadena);
                Date date = new Date();
                registry.setFechaActualizo(date.toString());
                registry.setFechaCargado(date.toString());
                dbmanager.insertTrama(registry);
-               
-               
-               
            }
        }
     }

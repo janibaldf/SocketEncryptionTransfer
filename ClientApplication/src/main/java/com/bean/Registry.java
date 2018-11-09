@@ -15,9 +15,18 @@ public class Registry {
   private int intento;
   private int idtrama;
   private String texto;
+
+    public String getEstacion() {
+        return estacion;
+    }
+
+    public void setEstacion(String estacion) {
+        this.estacion = estacion;
+    }
   private int estado;
   private String fechaCargado;
   private String fechaActualizo;
+  private String estacion;
 
     public int getId() {
         return id;
@@ -89,6 +98,6 @@ public class Registry {
     }
     
   public String toStringSplit() {
-        return  idpaquete + "$" + intento + "$" + idtrama + "$" + texto + "$" + estado + "$" + fechaCargado + "$" + fechaActualizo;
+        return  idpaquete + "$" + intento + "$" + idtrama + "$" + texto + "$" + estado + "$" + fechaCargado + "$" + fechaActualizo+"$"+estacion;
     }
 }

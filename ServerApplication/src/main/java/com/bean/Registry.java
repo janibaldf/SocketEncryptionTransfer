@@ -14,6 +14,8 @@ public class Registry {
    private String fechaActualizado;
    private String fechaCargado;  
 
+   
+
     public int getId() {
         return id;
     }
